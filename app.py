@@ -18,9 +18,8 @@ from Backend.admin.hobbies import hobbies_bp
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
-app = Flask(__name__, 
-            template_folder=os.path.join(base_dir, "Frontend"), 
-            static_folder=os.path.join(base_dir, "Frontend"))
+# Ubah bagian ini:
+app = Flask(__name__) # Flask akan otomatis mencari folder 'templates' dan 'static'
 app.secret_key = SECRET_KEY
 
 # === REGISTRASI SELURUH BLUEPRINT KE FLASK SYSTEM ===

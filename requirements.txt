@@ -1,1 +1,5 @@
-flask
+Flask
+python-dotenv
+mysql-connector-python
+cloudinary
+resend
