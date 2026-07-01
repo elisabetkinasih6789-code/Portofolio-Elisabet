@@ -30,7 +30,7 @@ def login():
         else:
             flash(f'Gagal terhubung ke database: {error}', 'danger')
             
-    return render_template('admin/login.html')
+    return render_template('login.html')
 
 # File: Backend/admin/login.py
 
