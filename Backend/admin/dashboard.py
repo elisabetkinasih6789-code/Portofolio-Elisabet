@@ -56,7 +56,7 @@ def admin_dashboard():
         cursor.close()
         conn.close()
 
-        return render_template('admin/dashboard.html',
+        return render_template('dashboard.html',
                                profil=profil,
                                pengalaman_list=pengalaman_list,
                                skill_list=skill_list,
