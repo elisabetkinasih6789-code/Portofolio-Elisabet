@@ -1,0 +1,147 @@
+<div class="admin-grid w-full">
+    <div class="card" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); overflow: hidden;">
+        <h3 style="color: #ff4d6d; margin-bottom: 20px;"><i class="fa-solid fa-envelope-open-text"></i> Kotak Pesan Masuk</h3>
+        
+        {% if pesan_list %}
+            <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed;">
+                <colgroup>
+                    <col style="width: 25%;">
+                    <col style="width: 40%;">
+                    <col style="width: 15%;">
+                    <col style="width: 20%;">
+                </colgroup>
+                <thead>
+                    <tr style="background: #f8f9fa; border-bottom: 2px solid #edf2f7;">
+                        <th style="padding: 12px;">Pengirim</th>
+                        <th style="padding: 12px;">Isi Pesan</th>
+                        <th style="padding: 12px;">Status</th>
+                        <th style="padding: 12px; text-align: right;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for msg in pesan_list %}
+                    <tr style="border-bottom: 1px solid #edf2f7;">
+                        <td style="padding: 15px 12px; word-wrap: break-word;">
+                            <strong style="font-size: 0.95rem;">{{ msg.nama }}</strong><br>
+                            <small style="color:#7f8c8d; word-break: break-all;">{{ msg.email }}</small>
+                        </td>
+                        <td style="padding: 15px 12px;">
+                            <p style="margin:0; font-size:0.95rem; color: #2d3748; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                {{ msg.isi_pesan }}
+                            </p>
+                        </td>
+                        <td style="padding: 15px 12px;">
+                            {% if msg.status == 'belum dibaca' %}
+                                <span style="background:#fff0f1; padding:4px 10px; border-radius:4px; color:#c8132a; font-size:0.8rem; font-weight:bold; border: 1px solid #ffccd0; white-space: nowrap;">Belum Dibaca</span>
+                            {% else %}
+                                <span style="background:#e8f8f5; padding:4px 10px; border-radius:4px; color:#10ac84; font-size:0.8rem; font-weight:bold; border: 1px solid #a3e4d7; white-space: nowrap;">Sudah Dibaca</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 15px 12px; text-align: right;">
+                            <div style="display: flex; justify-content: flex-end; align-items: center; gap: 6px; width: 100%;">
+                                
+                                <button type="button" 
+                                        data-id="{{ msg.id }}"
+                                        data-nama="{{ msg.nama }}"
+                                        data-email="{{ msg.email }}"
+                                        data-isi="{{ msg.isi_pesan }}"
+                                        data-status="{{ msg.status }}"
+                                        data-tanggal="{{ msg.created_at }}"
+                                        onclick="bukaFormDetail(this)" 
+                                        class="btn-edit-sm" 
+                                        style="background:#e8f8f5; color:#10ac84; padding: 6px 12px; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
+                                
+                                <a href="{{ url_for('contact.delete_message', id=msg.id) }}" 
+                                   class="btn-delete-sm" 
+                                   style="background:#fff0f1; color:#c8132a; padding: 6px 12px; text-decoration: none; border-radius: 6px; font-size: 0.85rem; font-weight: 500; display: inline-flex; align-items: center; white-space: nowrap;" 
+                                   onclick="return confirm('Hapus pesan ini?')">
+                                    Hapus
+                                </a>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="color:#7f8c8d; font-style:italic; text-align: center; padding: 30px 0;">Belum ada pesan masuk dari pengunjung.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div id="modalDetailPesan" style="display:none; position: fixed; z-index: 99999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
+    <div style="background-color: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 550px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: relative; animation: fadenih 0.3s ease;">
+        
+        <span onclick="tutupFormDetail()" style="position: absolute; right: 20px; top: 15px; font-size: 26px; cursor: pointer; color: #a0aec0; font-weight: bold;">&times;</span>
+        
+        <h3 style="color: #ff4d6d; margin-top: 0; border-bottom: 2px solid #edf2f7; padding-bottom: 12px; font-size: 1.4rem;">
+            <i class="fa-solid fa-envelope-open"></i> Detail Isi Pesan
+        </h3>
+        
+        <div style="margin-top: 20px; font-size: 0.95rem; color: #4a5568; display: flex; flex-direction: column; gap: 12px;">
+            <p style="margin:0;"><strong><i class="fa-solid fa-user" style="width: 20px; color:#ff4d6d;"></i> Nama:</strong> <span id="lblNama" style="color:#2d3748; font-weight: 600;"></span></p>
+            <p style="margin:0;"><strong><i class="fa-solid fa-envelope" style="width: 20px; color:#ff4d6d;"></i> Email:</strong> <span id="lblEmail" style="color:#2d3748;"></span></p>
+            <p style="margin:0;"><strong><i class="fa-solid fa-clock" style="width: 20px; color:#ff4d6d;"></i> Waktu:</strong> <span id="lblTanggal" style="color:#718096; font-size: 0.85rem;"></span></p>
+            <p style="margin:0; display: flex; align-items: center; gap: 5px;"><strong><i class="fa-solid fa-circle-question" style="width: 20px; color:#ff4d6d;"></i> Status:</strong> <span id="lblStatus"></span></p>
+            
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 10px 0;">
+            
+            <p style="margin:0;"><strong><i class="fa-solid fa-message" style="width: 20px; color:#ff4d6d;"></i> Isi Pesan Resmi:</strong></p>
+            <div id="lblIsiPesan" style="background: #f8f9fa; padding: 15px; border-radius: 8px; line-height: 1.6; color: #2d3748; white-space: pre-wrap; border: 1px solid #edf2f7; max-height: 180px; overflow-y: auto; font-family: 'Poppins', sans-serif;"></div>
+        </div>
+        
+        <div style="margin-top: 25px; text-align: right;">
+            <button type="button" onclick="tutupFormDetail()" style="background: #ff4d6d; color: white; border: none; padding: 10px 22px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 10px rgba(255, 77, 109, 0.2);">Selesai Membaca</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let butuhReloadUlang = false;
+
+    function bukaFormDetail(tombol) {
+        const id = tombol.getAttribute('data-id');
+        const nama = tombol.getAttribute('data-nama');
+        const email = tombol.getAttribute('data-email');
+        const isi = tombol.getAttribute('data-isi');
+        const status = tombol.getAttribute('data-status');
+        const tanggal = tombol.getAttribute('data-tanggal');
+
+        document.getElementById('lblNama').innerText = nama;
+        document.getElementById('lblEmail').innerText = email;
+        document.getElementById('lblTanggal').innerText = tanggal;
+        document.getElementById('lblIsiPesan').innerText = isi;
+
+        const statusBox = document.getElementById('lblStatus');
+        if (status === 'belum dibaca') {
+            statusBox.innerHTML = '<span style="background:#fff0f1; padding:2px 8px; border-radius:4px; color:#c8132a; font-size:0.75rem; font-weight:bold; border: 1px solid #ffccd0;">Belum Dibaca</span>';
+            butuhReloadUlang = true;
+            
+            fetch('/admin/read-message/' + id)
+                .then(res => console.log('Pesan #' + id + ' ditandai sudah dibaca.'))
+                .catch(err => console.error(err));
+        } else {
+            statusBox.innerHTML = '<span style="background:#e8f8f5; padding:2px 8px; border-radius:4px; color:#10ac84; font-size:0.75rem; font-weight:bold; border: 1px solid #a3e4d7;">Sudah Dibaca</span>';
+            butuhReloadUlang = false;
+        }
+
+        document.getElementById('modalDetailPesan').style.display = 'flex';
+    }
+
+    function tutupFormDetail() {
+        document.getElementById('modalDetailPesan').style.display = 'none';
+        if (butuhReloadUlang) {
+            window.location.reload();
+        }
+    }
+</script>
+
+<style>
+    @keyframes fadenih {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+</style>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin.css') }}">
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <i class="fa-solid fa-strawberry" style="color: #ff4d6d;"></i> 🍓 Admin Panel
+        </div>
+        <div class="sidebar-menu">
+            <a onclick="bukaTab(event, 'tab-bio')" class="tab-link active"><i class="fa-solid fa-user"></i> Bio &amp; About</a>
+            <a onclick="bukaTab(event, 'tab-experience')" class="tab-link"><i class="fa-solid fa-briefcase"></i> Kelola Experience</a>
+            <a onclick="bukaTab(event, 'tab-skills')" class="tab-link"><i class="fa-solid fa-bolt"></i> Kelola Skills</a>
+            <a onclick="bukaTab(event, 'tab-projects')" class="tab-link"><i class="fa-solid fa-rocket"></i> Kelola Projects</a>
+            <a onclick="bukaTab(event, 'tab-hobbies')" class="tab-link"><i class="fa-solid fa-heart"></i> Kelola Hobi</a>
+            <a onclick="bukaTab(event, 'tab-messages')" class="tab-link"><i class="fa-solid fa-envelope"></i> Pesan Masuk</a>
+            <a href="{{ url_for('login.logout') }}" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Keluar</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <!-- KOREKSI UTAMA: Blok Notifikasi Flash Message yang Sudah Diperbaiki -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div id="tab-bio" class="tab-content active">
+            <div class="welcome-header">
+                <h2>Selamat datang di Ruang Kendali, {{ session['username'] }}! ✨</h2>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <div class="stats-info"><h3>{{ pengalaman_list|length }}</h3><p>Total Experience</p></div>
+                    <i class="fa-solid fa-briefcase stats-icon"></i>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-info"><h3>{{ skill_list|length }}</h3><p>Skill Tersimpan</p></div>
+                    <i class="fa-solid fa-bolt stats-icon"></i>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-info"><h3>{{ proyek_list|length }}</h3><p>Proyek Portofolio</p></div>
+                    <i class="fa-solid fa-rocket stats-icon"></i>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-info"><h3>{{ hobi_list|length if hobi_list else 4 }}</h3><p>Total Hobi Aktif</p></div>
+                    <i class="fa-solid fa-heart stats-icon"></i>
+                </div>
+            </div>
+
+            {% include 'admin/base.html' %} 
+        </div>
+
+        <div id="tab-experience" class="tab-content">
+            {% include 'admin/experience.html' %}
+        </div>
+
+        <div id="tab-skills" class="tab-content">
+            {% include 'admin/skills.html' %}
+        </div>
+
+        <div id="tab-projects" class="tab-content">
+            {% include 'admin/projects.html' %}
+        </div>
+
+        <div id="tab-hobbies" class="tab-content">
+            {% include 'admin/hobbies.html' %}
+        </div>
+
+        <div id="tab-messages" class="tab-content">
+            {% include 'admin/messages.html' %}
+        </div>
+        
+    </div>
+
+<script>
+    function bukaTab(evt, namaTab) {
+        const tabContent = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+            tabContent[i].classList.remove("active");
+        }
+
+        const tabLinks = document.getElementsByClassName("tab-link");
+        for (let i = 0; i < tabLinks.length; i++) {
+            tabLinks[i].classList.remove("active");
+        }
+
+        const elemenAktif = document.getElementById(namaTab);
+        if (elemenAktif) {
+            elemenAktif.style.display = "block";
+            setTimeout(() => { elemenAktif.classList.add("active"); }, 10);
+        }
+        
+        if (evt) {
+            evt.currentTarget.classList.add("active");
+        } else {
+            const tombolMenu = document.querySelector(`[onclick*="${namaTab}"]`);
+            if (tombolMenu) tombolMenu.classList.add("active");
+        }
+
+        localStorage.setItem('tabAdminAktif', namaTab);
+    }
+
+    window.onload = function() {
+        const tabTerakhir = localStorage.getItem('tabAdminAktif');
+        if (tabTerakhir) {
+            bukaTab(null, tabTerakhir);
+        } else {
+            bukaTab(null, 'tab-bio');
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,1214 @@
+/* ===================================================
+   TOKENS
+=================================================== */
+:root{
+  --red-deep:      #A3121C;
+  --red-bright:    #C8132A;
+  --red-soft:      #E8717E;
+  --cream:         #FBF3E7;
+  --cream-2:       #F4E9DA;
+  --clover:        #7C9B6C;
+  --ink:           #3A2420;
+  --ink-soft:      #6B5550;
+  --white:         #FFFFFF;
+  --gingham-light:#F6D9D9;
+
+  --font-display: 'Fredoka', sans-serif;
+  --font-body:    'Poppins', sans-serif;
+
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+
+  --shadow-card: 0 8px 24px rgba(163,18,28,0.12);
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--cream);
+  overflow-x:hidden;
+}
+
+img{ max-width:100%; display:block; }
+
+a{ text-decoration:none; color:inherit; }
+
+ul{ list-style:none; }
+
+::selection{ background: var(--red-soft); color: var(--white); }
+
+/* ===================================================
+   BUTTONS
+=================================================== */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family: var(--font-display);
+  font-weight:600;
+  font-size:0.85rem;
+  letter-spacing:0.04em;
+  padding:14px 28px;
+  border-radius:50px;
+  border:none;
+  cursor:pointer;
+  transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+
+.btn-primary{
+  background: var(--red-bright);
+  color: var(--white);
+  box-shadow: 0 6px 18px rgba(200,19,42,0.35);
+}
+.btn-primary:hover{
+  background: var(--red-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(200,19,42,0.45);
+}
+
+/* ===================================================
+   SECTION TITLE / RIBBON
+=================================================== */
+.section-title{
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  text-align:center;
+  color: var(--red-bright);
+  text-shadow: 0 2px 0 rgba(255,255,255,0.6);
+  margin-bottom: 36px;
+  position:relative;
+  z-index:2;
+}
+
+.ribbon-tag{
+  display:block;
+  width:fit-content;
+  margin: 0 auto 14px;
+  background: var(--white);
+  color: var(--red-bright);
+  font-family: var(--font-display);
+  font-size:0.72rem;
+  font-weight:600;
+  letter-spacing:0.12em;
+  padding:8px 22px;
+  border-radius:50px;
+  box-shadow: var(--shadow-card);
+  position:relative;
+  z-index:2;
+  text-align:center;
+}
+.ribbon-tag.center{ display:block; }
+
+/* ===================================================
+   NAVBAR
+=================================================== */
+.navbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(163,18,28,0.08);
+}
+
+.nav-inner{
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 32px;
+}
+
+.logo{
+  font-family: var(--font-display);
+  font-size:1.5rem;
+  font-weight:700;
+  color: var(--red-bright);
+}
+
+.nav-links{
+  display:flex;
+  gap:32px;
+  font-weight:500;
+  font-size:0.92rem;
+  color: var(--ink-soft);
+}
+
+.nav-links a{
+  position:relative;
+  padding:6px 2px;
+  transition: color .2s ease;
+}
+.nav-links a::after{
+  content:'';
+  position:absolute;
+  left:0; bottom:-2px;
+  width:0; height:2px;
+  background: var(--red-bright);
+  transition: width .25s ease;
+}
+.nav-links a:hover,
+.nav-links a.active{ color: var(--red-bright); }
+.nav-links a:hover::after,
+.nav-links a.active::after{ width:100%; }
+
+.nav-cta{ padding:10px 22px; font-size:0.78rem; }
+
+.burger{
+  display:none;
+  flex-direction:column;
+  gap:5px;
+  background:none;
+  border:none;
+  cursor:pointer;
+}
+.burger span{
+  width:24px; height:2px;
+  background: var(--red-bright);
+  border-radius:2px;
+}
+
+
+/* ===================================================
+   HERO (Sudah Disesuaikan dengan Background Desainmu)
+=================================================== */
+.hero {
+  position: relative;
+  /* Mengunci tinggi pas satu layar penuh laptop dikurangi navbar */
+  height: calc(100vh - 75px); 
+  min-height: 540px; 
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  
+  background-image: url('gambar/background.jpg');
+  
+  /* KUNCI PERBAIKAN: Kembalikan ke 'cover' agar gambar mempertahankan 
+     rasio aslinya, sehingga muka dan HP kamu tidak akan gepeng/melar */
+  background-size: cover; 
+  
+  /* Memastikan gambar dipotong secara adil di sisi kanan-kiri-atas-bawah 
+     dan area awan putih tetap presisi di tengah-tengah layar */
+  background-position: center center; 
+  
+  background-repeat: no-repeat;
+  padding: 40px 24px;
+}
+
+/* Disembunyikan karena polanya sudah ada di dalam background.jpg */
+.hero-bg-pattern{
+  display: none;
+}
+
+/* Disembunyikan lewat CSS agar stiker tiruan tidak menumpuk stiker asli gambar */
+.hero-decor{
+  display: none;
+}
+
+/* Diubah dari Grid menjadi Flexbox kencang agar teks pas di tengah kotak awan putih */
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:520px; /* Mempersempit lebar area teks agar pas di dalam ruang awan putih */
+  width:100%;
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Pengaman: Menyembunyikan elemen HP & Polaroid tiruan HTML agar tidak merusak background */
+.hero-phone, .hero-polaroid {
+  display: none !important;
+}
+
+.hero-text{ 
+  text-align:center; 
+}
+
+/* ===================================================
+   TYPOGRAPHY HERO ENHANCEMENT (Bikin Font Pop & Estetik)
+=================================================== */
+.hero-eyebrow {
+  display: inline-block;
+  /* Diubah menjadi latar merah teks putih agar menjadi focal point yang kontras */
+  background: var(--red-bright); 
+  color: var(--white);
+  font-family: var(--font-display); /* Menggunakan Fredoka */
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.15em; /* Jarak huruf diperlebar agar terlihat clean */
+  padding: 8px 22px;
+  border-radius: 50px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 12px rgba(200, 19, 42, 0.15); /* Efek bayangan halus pada tag */
+  text-transform: uppercase;
+}
+
+.hero-text { 
+  text-align: center; 
+  /* KUNCI PERGESERAN: Menggeser seluruh blok teks (tag, nama, tombol) 
+     ke kanan sebanyak 60px agar menjauh dari gambar HP */
+  margin-left: 120px; 
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5vw, 4rem); /* Ukuran disesuaikan sedikit agar lebih proporsional */
+  color: var(--red-bright);
+  /* Jarak antar baris dirapatkan sedikit (dari 1.2 ke 1.1) agar nama atas 
+     dan bawah terlihat menyatu kompak seperti satu kesatuan stiker */
+  line-height: 1.1; 
+  letter-spacing: 0.01em;
+  margin-bottom: 28px;
+  text-transform: capitalize; 
+
+  /* EFEK STIKER (Dihaluskan koordinatnya agar pinggirannya tidak pecah/terlihat patah) */
+  text-shadow:
+    -4px -4px 0 #fff,  4px -4px 0 #fff, -4px  4px 0 #fff,  4px  4px 0 #fff,
+    -4px  0px 0 #fff,  4px  0px 0 #fff,  0px -4px 0 #fff,  0px  4px 0 #fff,
+    -3px -4px 0 #fff,  3px -4px 0 #fff, -3px  4px 0 #fff,  3px  4px 0 #fff,
+    -4px -3px 0 #fff,  4px -3px 0 #fff, -4px  3px 0 #fff,  4px  3px 0 #fff,
+    -2px -4px 0 #fff,  2px -4px 0 #fff, -2px  4px 0 #fff,  2px  4px 0 #fff,
+    -4px -2px 0 #fff,  4px -2px 0 #fff, -4px  2px 0 #fff,  4px  2px 0 #fff,
+    
+    /* Bayangan belakang dibuat sedikit lebih tipis dan menyebar agar efek 3D-nya natural */
+    4px 6px 12px rgba(163, 18, 28, 0.2); 
+}
+
+.hero-btn {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 14px 38px;
+  text-transform: uppercase;
+  box-shadow: 0 8px 24px rgba(200, 19, 42, 0.35);
+  transition: all 0.25s ease;
+}
+
+.hero-btn:hover {
+  transform: translateY(-3px) scale(1.02); /* Animasi hover melayang sedikit saat didekati mouse */
+  box-shadow: 0 12px 28px rgba(200, 19, 42, 0.45);
+}
+
+/* ===================================================
+   GINGHAM STRIP DIVIDER
+=================================================== */
+.gingham-strip{
+  height:60px;
+  background:
+    repeating-linear-gradient(0deg, rgba(163,18,28,0.35) 0 10px, transparent 10px 22px),
+    repeating-linear-gradient(90deg, rgba(163,18,28,0.35) 0 10px, transparent 10px 22px),
+    var(--cream-2);
+}
+.gingham-strip.small{ height:36px; }
+/* ===================================================
+   ABOUT ME (Centered Card Only — Tanpa Foto)
+=================================================== */
+.about {
+  position: relative;
+  padding: 140px 24px;
+  background: 
+    repeating-linear-gradient(0deg, rgba(163, 18, 28, 0.22) 0 10px, transparent 10px 42px),
+    repeating-linear-gradient(90deg, rgba(163, 18, 28, 0.22) 0 10px, transparent 10px 42px),
+    var(--cream-2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.about-container {
+  position: relative;
+  max-width: 800px; /* Mengunci batas lebar ideal kartu saat sendirian di tengah */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.about-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 36px;
+  padding: 70px 60px 60px 60px; /* Padding disamakan seimbang kiri dan kanan */
+  box-shadow: 0 30px 70px rgba(163, 12, 28, 0.08);
+  position: relative;
+  text-align: center;
+  min-height: 380px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-capsule {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--red-bright);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 10px 32px;
+  border-radius: 50px;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(200, 19, 42, 0.25);
+}
+
+.about-title {
+  font-family: var(--font-display);
+  color: var(--red-bright);
+  font-size: 3.5rem;
+  margin-top: 10px;
+  margin-bottom: 24px;
+  text-shadow: none;
+}
+
+.about-text {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 36px;
+  max-width: 620px; /* Lebar teks dioptimalkan agar seimbang di dalam kartu */
+}
+
+.btn-contact-about {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--red-bright);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 14px 42px;
+  border-radius: 50px;
+  box-shadow: 0 8px 20px rgba(200, 19, 42, 0.3);
+  transition: all 0.25s ease;
+}
+
+.btn-contact-about:hover {
+  background: var(--red-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(200, 19, 42, 0.45);
+
+}
+/* ===================================================
+   SKILLS
+=================================================== */
+.skills{
+  position:relative;
+  padding:90px 24px;
+  background: var(--cream-2);
+  overflow:hidden;
+}
+
+.clover-pattern{
+  position:absolute; inset:0;
+  background-image: radial-gradient(circle, var(--clover) 1.5px, transparent 1.6px);
+  background-size: 42px 42px;
+  opacity:0.35;
+  pointer-events:none;
+}
+
+.skills-grid{
+  position:relative;
+  z-index:2;
+  max-width:1000px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap:18px;
+}
+
+.skill-card{
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding:26px 12px;
+  text-align:center;
+  box-shadow: var(--shadow-card);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.skill-card:hover{
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(163,18,28,0.2);
+}
+.skill-icon{ font-size:1.8rem; margin-bottom:10px; }
+.skill-card p{ font-size:0.78rem; font-weight:600; color: var(--ink-soft); }
+
+/* ===================================================
+   EXPERIENCE
+=================================================== */
+.experience{
+  position:relative;
+  padding: 70px 24px 100px;
+  background: var(--cream);
+  overflow:hidden;
+}
+
+.timeline{
+  position:relative;
+  z-index:2;
+  max-width:780px;
+  margin:0 auto;
+}
+
+.timeline-line{
+  position:absolute;
+  left:50%;
+  top:0; bottom:0;
+  width:3px;
+  background: repeating-linear-gradient(to bottom, var(--red-bright) 0 8px, transparent 8px 16px);
+  transform: translateX(-50%);
+}
+
+.timeline-item{
+  position:relative;
+  width:50%;
+  padding: 0 40px 50px;
+}
+.timeline-item.left{ left:0; text-align:right; }
+.timeline-item.right{ left:50%; text-align:left; }
+
+.timeline-dot{
+  position:absolute;
+  top:8px;
+  width:18px; height:18px;
+  background: var(--white);
+  border:4px solid var(--red-bright);
+  border-radius:50%;
+  z-index:3;
+}
+.timeline-item.left .timeline-dot{ right:-9px; }
+.timeline-item.right .timeline-dot{ left:-9px; }
+
+.timeline-card{
+  background: var(--cream-2);
+  border-radius: var(--radius-md);
+  padding:22px 26px;
+  box-shadow: var(--shadow-card);
+}
+
+.timeline-date{
+  display:inline-block;
+  font-family: var(--font-display);
+  font-size:0.7rem;
+  font-weight:600;
+  color: var(--red-bright);
+  background: var(--white);
+  padding:4px 12px;
+  border-radius:50px;
+  margin-bottom:10px;
+  letter-spacing:0.06em;
+}
+
+.timeline-card h3{
+  font-family: var(--font-display);
+  font-size:1.1rem;
+  margin-bottom:2px;
+  color: var(--ink);
+}
+
+.timeline-sub{
+  font-size:0.78rem;
+  font-weight:600;
+  color: var(--clover);
+  margin-bottom:8px;
+}
+
+.timeline-desc{
+  font-size:0.85rem;
+  line-height:1.6;
+  color: var(--ink-soft);
+}
+
+/* ===================================================
+   PROJECT
+=================================================== */
+.project{
+  position:relative;
+  padding: 70px 24px 100px;
+  background: var(--cream-2);
+}
+
+.project-grid{
+  max-width:1000px;
+  margin:36px auto 0;
+  display:grid;
+  grid-template-columns: 1.3fr 1fr;
+  grid-template-rows: auto auto;
+  gap:20px;
+}
+
+.project-card{
+  border-radius: var(--radius-lg);
+  padding:28px;
+  box-shadow: var(--shadow-card);
+  position:relative;
+}
+
+.project-card.large{
+  background: var(--gingham-light);
+  grid-row: span 2;
+}
+.project-card.highlight{
+  background: var(--red-bright);
+  color: var(--white);
+}
+.project-card.small{
+  background: var(--white);
+}
+
+.project-card h3{
+  font-family: var(--font-display);
+  font-size:1.15rem;
+  margin-bottom:10px;
+}
+
+.project-card p{
+  font-size:0.86rem;
+  line-height:1.6;
+  opacity:0.9;
+  margin-bottom:14px;
+}
+
+.tag-row{ display:flex; gap:8px; flex-wrap:wrap; }
+.tag{
+  font-size:0.7rem;
+  font-weight:600;
+  padding:6px 14px;
+  border-radius:50px;
+  background: rgba(163,18,28,0.08);
+  color: var(--red-deep);
+}
+.project-card.highlight .tag{
+  background: rgba(255,255,255,0.2);
+  color: var(--white);
+}
+
+.heart-icon{
+  position:absolute;
+  top:18px; right:22px;
+  font-size:1.4rem;
+}
+
+.dot-icon{ font-size:1.4rem; display:inline-block; margin-bottom:10px; }
+
+.link-arrow{
+  font-family: var(--font-display);
+  font-size:0.75rem;
+  font-weight:600;
+  letter-spacing:0.05em;
+  border-bottom:1px solid rgba(255,255,255,0.6);
+  padding-bottom:2px;
+}
+
+/* ===================================================
+   CONTACT
+=================================================== */
+.contact{
+  position:relative;
+  padding: 90px 24px 70px;
+  text-align:center;
+  background: var(--cream);
+}
+
+.heart-icon.big{
+  display:block;
+  font-size:2.4rem;
+  color: var(--red-bright);
+  margin-bottom:8px;
+}
+
+.contact-sub{
+  max-width:480px;
+  margin:0 auto 40px;
+  color: var(--ink-soft);
+  font-size:0.95rem;
+}
+
+.contact-form{
+  max-width:640px;
+  margin:0 auto;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding:36px;
+  box-shadow: var(--shadow-card);
+  text-align:left;
+}
+
+.form-row{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:18px;
+}
+
+.form-group{ margin-bottom:18px; }
+
+.form-group label{
+  display:block;
+  font-size:0.78rem;
+  font-weight:600;
+  color: var(--red-bright);
+  margin-bottom:6px;
+}
+
+.form-group input,
+.form-group textarea{
+  width:100%;
+  border:1.5px solid var(--cream-2);
+  background: var(--cream-2);
+  border-radius: var(--radius-sm);
+  padding:12px 16px;
+  font-family: var(--font-body);
+  font-size:0.88rem;
+  color: var(--ink);
+  resize:vertical;
+  transition: border-color .2s ease, background .2s ease;
+}
+.form-group input:focus,
+.form-group textarea:focus{
+  outline:none;
+  border-color: var(--red-bright);
+  background: var(--white);
+}
+
+.form-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:16px;
+  margin-top:6px;
+}
+
+.checkbox-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:0.8rem;
+  color: var(--ink-soft);
+}
+
+.form-success{
+  display:none;
+  margin-top:20px;
+  color: var(--clover);
+  font-weight:600;
+  font-family: var(--font-display);
+}
+.form-success.show{ display:block; }
+
+/* ===================================================
+   FOOTER
+=================================================== */
+.footer{
+  text-align:center;
+  padding:24px;
+  font-size:0.8rem;
+  color: var(--ink-soft);
+  background: var(--cream-2);
+}
+
+/* ===================================================
+   RESPONSIVE
+=================================================== */
+@media (max-width: 900px){
+  .hero-content{ grid-template-columns:1fr; gap:36px; }
+  .hero-phone, .hero-polaroid{ order:3; }
+  .about-grid{ grid-template-columns:1fr; }
+  .about-photo{ order:-1; max-width:300px; margin:0 auto; }
+  .skills-grid{ grid-template-columns: repeat(3, 1fr); }
+  .project-grid{ grid-template-columns:1fr; }
+  .project-card.large{ grid-row:auto; }
+  .form-row{ grid-template-columns:1fr; }
+}
+
+@media (max-width: 760px){
+  .nav-links, .nav-cta{ display:none; }
+  .burger{ display:flex; }
+  .nav-links.open{
+    display:flex;
+    position:absolute;
+    top:100%; left:0; right:0;
+    background: var(--white);
+    flex-direction:column;
+    padding:20px 32px;
+    gap:16px;
+    box-shadow: var(--shadow-card);
+  }
+  .timeline-line{ left:18px; }
+  .timeline-item, .timeline-item.left, .timeline-item.right{
+    width:100%; left:0; text-align:left; padding-left:48px; padding-right:8px;
+  }
+  .timeline-item.left .timeline-dot,
+  .timeline-item.right .timeline-dot{ left:9px; right:auto; }
+}
+
+@media (max-width: 480px){
+  .skills-grid{ grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .hero-decor{ animation:none; }
+  html{ scroll-behavior:auto; }
+}
+/* ===================================================
+   TOMBOL LOGIN NAVBAR (RAPAT & SEJAJAR SEMPURNA)
+=================================================== */
+.login-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #c8132a;
+    color: white !important;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    padding: 10px 24px; /* Tinggi dan lebar tombol Login */
+    border-radius: 30px;
+    
+    /* PENGATURAN JARAK */
+    margin-left: 15px;  /* Jarak dari menu Project di kirinya */
+    margin-right: 0px;   /* Kita nol-kan margin kanannya */
+    
+    vertical-align: middle; /* Memaksa sejajar secara vertikal dengan tombol sebelah */
+    box-shadow: 0 4px 15px rgba(200, 19, 42, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.login-nav-btn:hover {
+    background-color: #a00f20;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(200, 19, 42, 0.35);
+}
+
+/* ===================================================
+   PENGONCI TOMBOL CONTACT ME (BIAR IKUT MEPET)
+=================================================== */
+/* Ganti .contact-btn di bawah ini dengan nama class tombol Contact Me aslimu */
+.contact-btn {
+    margin-left: 12px !important; /* Memaksa tombol Contact Me mendekat ke kiri hanya berjarak 12px */
+    vertical-align: middle;        /* Memastikan tingginya sejajar rata air */
+}
+/* Pastikan ukuran wadah abu-abu pas dan melengkung di bagian atas card */
+.project-image-box {
+    width: 100%;
+    height: 200px; /* Sesuaikan tinggi kotak abu-abu sesuai desainmu */
+    background-color: #e9ecef; /* Warna abu-abu dasar */
+    border-top-left-radius: 16px; /* Menyamakan lengkungan sudut atas card */
+    border-top-right-radius: 16px;
+    overflow: hidden; /* Memotong gambar yang keluar dari batas lengkungan */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* ===================================================
+   PENGATURAN GRID PORTOFOLIO PROYEK (SUDAH DIPERBAIKI)
+=================================================== */
+
+/* 1. Wadah Besar Grid Proyek */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Mengunci batas minimal lebar kartu */
+    gap: 30px; /* Jarak antar kartu proyek */
+    padding: 30px 0;
+    max-width: 1200px; /* Membatasi lebar agar tidak melar se-layar penuh */
+    margin: 0 auto; /* Memposisikan seluruh grid pas di tengah halaman */
+}
+
+/* 2. Komponen Kartu Proyek */
+.project-card {
+    background: white;
+    border-radius: 16px; /* Membuat sudut kartu melengkung halus */
+    overflow: hidden; /* Memotong gambar/konten yang keluar batas lekukan */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04); /* Efek bayangan tipis yang elegan */
+    display: flex;
+    flex-direction: column; /* Mengatur isi kartu berurutan dari atas ke bawah */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-8px); /* Efek kartu terangkat saat dilewati kursor */
+    box-shadow: 0 15px 35px rgba(122, 15, 24, 0.08);
+}
+
+/* 3. Kotak Pembungkus Gambar Cloudinary */
+.project-image-box {
+    width: 100%;
+    height: 220px; /* Mengunci tinggi kotak gambar secara mutlak */
+    background-color: #f1f2f6;
+    overflow: hidden;
+    position: relative;
+}
+
+.project-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Gambar otomatis terpotong proporsional, anti-gepeng */
+    display: block;
+}
+
+/* 4. Area Konten Teks di Bawah Gambar */
+.project-content {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Memastikan tinggi ruang teks seimbang antar kartu */
+}
+
+.project-content h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.3rem;
+    color: #2c3e50;
+    font-weight: 700;
+}
+
+.project-content p {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 25px 0;
+}
+
+/* 5. Tombol Link Aksi Proyek */
+.project-actions {
+    margin-top: auto; /* Memaksa tombol selalu berlabuh di paling bawah kartu */
+}
+
+.project-btn {
+    text-decoration: none;
+    color: #c8132a;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+}
+
+.project-btn:hover {
+    color: #7a0f18;
+}
+
+/* ===================================================
+   TEMA PREMIUM: REVISI MIDNIGHT BERRY + HERO GLASSMORPHISM
+   (Ganti kode kemarin di paling bawah style.css dengan ini)
+=================================================== */
+
+body.dark-mode {
+    background-color: #1c080b !important; /* Pink tua-hitam (Midnight Berry) */
+    color: #ffeef0 !important;           /* Teks soft pink */
+}
+
+/* 1. NAVBAR - Burgundy Gelap Sleek */
+body.dark-mode .navbar {
+    background-color: #2b1216 !important;
+    border-bottom: 1px solid #4a1d24 !important;
+    box-shadow: 0 4px 12px rgba(43, 18, 22, 0.5) !important;
+}
+body.dark-mode .nav-links a, 
+body.dark-mode .logo {
+    color: #ffeef0 !important;
+}
+body.dark-mode #theme-toggle {
+    color: #ff758f !important; /* Ikon matahari jadi pink cerah */
+}
+
+/* 2. HERO SECTION - REVISI TOTAL (HAPUS KOTAK, REDUPKAN BACKGROUND UTAMA) */
+body.dark-mode .hero {
+    position: relative;
+    background-color: #1c080b !important;
+}
+
+/* Trik Jenius: Membuat seluruh background foto/piknik meredup jadi pink tua/burgundy */
+body.dark-mode .hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(28, 8, 11, 0.45), rgba(28, 8, 11, 0.75)) !important;
+    z-index: 1;
+}
+
+/* Memaksa teks dan foto polaroid kamu naik ke atas lapisan pelindung */
+body.dark-mode .hero-content,
+body.dark-mode .hero-content * {
+    position: relative;
+    z-index: 2;
+}
+
+/* HAPUS TOTAL KOTAK COKELAT YANG BIKIN JELEK TADI */
+body.dark-mode .hero-text {
+    background: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+body.dark-mode .hero-title {
+    color: #ffffff !important;
+    /* Efek bayangan tipis agar teks makin pop-out tajam */
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important; 
+}
+
+body.dark-mode .hero-eyebrow {
+    background: #5c242d !important; /* Ubah pelapis welcome teks jadi maroon matte */
+    color: #ff758f !important;
+}
+
+/* 3. ABOUT SECTION */
+body.dark-mode .about {
+    background-color: #2b1216 !important;
+}
+body.dark-mode .about-card {
+    background-color: #3d1a20 !important;
+    color: #fce7e9 !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25) !important;
+}
+body.dark-mode .about-title {
+    color: #ffffff !important;
+}
+body.dark-mode .about-text {
+    color: #f3d1d5 !important;
+}
+
+/* 4. SKILLS SECTION */
+body.dark-mode .skills {
+    background-color: #1c080b !important;
+}
+body.dark-mode .skill-card {
+    background-color: #260f12 !important;
+    border: 1px solid #4a1d24 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+body.dark-mode .skill-card h3 {
+    color: #ffffff !important;
+}
+
+/* 5. EXPERIENCE SECTION */
+body.dark-mode .experience {
+    background-color: #2b1216 !important;
+}
+body.dark-mode .timeline-card {
+    background-color: #3d1a20 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+}
+body.dark-mode .timeline-card h3 {
+    color: #ffffff !important;
+}
+body.dark-mode .timeline-sub {
+    color: #ff758f !important;
+}
+body.dark-mode .timeline-desc {
+    color: #f3d1d5 !important;
+}
+
+/* 6. PROJECTS SECTION */
+body.dark-mode .projects {
+    background-color: #1c080b !important;
+}
+body.dark-mode .project-card {
+    background-color: #260f12 !important;
+    border: 1px solid #3d1a20 !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
+}
+body.dark-mode .project-content h3 {
+    color: #ffffff !important;
+}
+body.dark-mode .project-content p {
+    color: #cca7ac !important;
+}
+
+/* 7. CONTACT SECTION */
+body.dark-mode .contact {
+    background-color: #2b1216 !important;
+}
+body.dark-mode .contact-sub {
+    color: #cca7ac !important;
+}
+body.dark-mode .form-group label {
+    color: #fce7e9 !important;
+}
+body.dark-mode .contact-form input,
+body.dark-mode .contact-form textarea {
+    background-color: #3d1a20 !important;
+    color: #ffffff !important;
+    border: 1px solid #5c242d !important;
+}
+body.dark-mode .contact-form input:focus,
+body.dark-mode .contact-form textarea:focus {
+    border-color: #ff758f !important;
+    background-color: #4a1d24 !important;
+}
+
+/* 8. FOOTER */
+body.dark-mode .footer {
+    background-color: #1c080b !important;
+    color: #cca7ac !important;
+    border-top: 1px solid #2b1216 !important;
+}
+
+/* Efek Transisi Warna Halus Semuanya */
+.navbar, .hero, .hero-text, .hero-eyebrow, .about, .about-card, .skills, .skill-card, .experience, .timeline-card, .projects, .project-card, .contact, .footer, a, p, h1, h2, h3, input, textarea {
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease !important;
+}
+/* ===================================================
+   REVISI TOTAL: LAYOUT SECTION HOBBIES MANDIRI ELISABET
+=================================================== */
+.hobbies {
+    background-color: #fffafb; /* Warna latar belakang soft pastel pink */
+}
+
+.hobbies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    width: 100%;
+}
+
+.hobby-item-card {
+    background: #ffffff;
+    border: 1px solid #ffeef0;
+    padding: 30px 25px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(255, 77, 109, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease;
+}
+
+.hobby-item-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(255, 77, 109, 0.12);
+}
+
+.hobby-icon {
+    font-size: 2.3rem;
+    color: #ff4d6d;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+
+.hobby-item-card:hover .hobby-icon {
+    transform: scale(1.18) rotate(8deg);
+}
+
+.hobby-item-card h4 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: #2d3748;
+    margin: 10px 0 10px 0;
+}
+
+.hobby-item-card p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #718096;
+    margin: 0;
+}
+
+/* INTEGRASI INTEGRAL TEMA DARK MODE (PINK TUA BERKILAU) */
+body.dark-mode .hobbies {
+    background-color: #2b1216 !important; /* Senada dengan background journey malam */
+}
+
+body.dark-mode .hobbies h2.section-title {
+    color: #ffffff !important;
+}
+
+body.dark-mode .hobbies p {
+    color: #cca7ac !important;
+}
+
+body.dark-mode .hobby-item-card {
+    background: #1c080b !important; /* Warna boks beludru gelap */
+    border: 1px solid #3d1a20 !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .hobby-item-card:hover {
+    box-shadow: 0 15px 30px rgba(255, 117, 143, 0.2) !important;
+    border-color: #ff758f !important;
+}
+
+body.dark-mode .hobby-item-card h4 {
+    color: #ffffff !important;
+}
+
+body.dark-mode .hobby-item-card p {
+    color: #f3d1d5 !important;
+}
+
+body.dark-mode .hobby-icon {
+    color: #ff758f !important;
+}
+/* ===================================================
+   TAMBAHAN: TATA LETAK & ANIMASI FOOTER SOCIALS ELISABET
+=================================================== */
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    gap: 15px; /* Memberi jarak vertikal antara baris ikon dan teks copyright */
+}
+
+.footer-socials {
+    display: flex;
+    gap: 25px; /* Jarak horizontal antar ikon media sosial */
+    margin-bottom: 5px;
+}
+
+.footer-socials a {
+    font-size: 1.6rem; /* Ukuran proporsional ikon */
+    color: #718096; /* Warna abu-abu elegan saat diam */
+    transition: transform 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Efek Hover: Ikon akan naik sedikit dan berubah warna menjadi pink khas portofoliomu */
+.footer-socials a:hover {
+    color: #ff4d6d;
+    transform: translateY(-5px) scale(1.12);
+}
+
+/* Sinkronisasi Warna Sempurna Saat Mode Malam Aktif */
+body.dark-mode .footer-socials a {
+    color: #cca7ac;
+}
+
+body.dark-mode .footer-socials a:hover {
+    color: #ff758f;
+}

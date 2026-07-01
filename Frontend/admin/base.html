@@ -1,0 +1,16 @@
+<div class="admin-grid w-full">
+    <div class="card">
+        <h3 style="color: var(--primary-maroon);"><i class="fa-solid fa-gear"></i> Pengaturan Bio Utama &amp; About Me</h3>
+        <form action="{{ url_for('profiles.update_profil') }}" method="POST">
+            <div class="form-group">
+                <label>Nama Lengkap Halaman Depan</label>
+                <input type="text" name="nama" class="form-control" value="{{ profil.nama }}" required>
+            </div>
+            <div class="form-group">
+                <label>Deskripsi Tentang Saya (About Card)</label>
+                <textarea name="deskripsi" class="form-control" rows="5" required>{{ profil.deskripsi }}</textarea>
+            </div>
+            <button type="submit" class="btn-maroon">Simpan Perubahan Tampilan Utama</button>
+        </form>
+    </div>
+</div>

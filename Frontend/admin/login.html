@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk Admin - Portfolio</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ===================================================
+           BODY DENGAN LATAR PLAID GRID KEMBAR ABOUT ME 🍓
+        =================================================== */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            
+            /* Warna dasar cream hangat sesuai foto */
+            background-color: #f5e5db; 
+            
+            /* Garis merah marun transparan (rgba) agar membentuk pola tumpuk otomatis */
+            background-image: 
+                linear-gradient(rgba(196, 40, 58, 0.18) 3px, transparent 3px),
+                linear-gradient(90deg, rgba(196, 40, 58, 0.18) 3px, transparent 3px);
+            background-size: 34px 34px; /* Kerapatan ukuran kotak piknik */
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            /* Bayangan halus agar kotak login terlihat timbul dari background */
+            box-shadow: 0 15px 35px rgba(122, 15, 24, 0.08); 
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            color: #7a0f18; /* Merah marun judul */
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555555;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #ebdcd5;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            background-color: #fffaf8;
+            color: #333333;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-control-password {
+            padding-right: 45px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #c8132a;
+            background-color: #ffffff;
+            box-shadow: 0 0 8px rgba(200, 19, 42, 0.1);
+        }
+
+        /* IKON MATA MELAYANG */
+        .eye-icon {
+            position: absolute;
+            right: 16px;
+            color: #888888;
+            cursor: pointer;
+            transition: color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .eye-icon:hover {
+            color: #c8132a;
+        }
+
+        /* CHECKBOX SIMPAN PASSWORD */
+        .options-group {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666666;
+            font-size: 0.88rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-label input {
+            accent-color: #c8132a;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        /* TOMBOL LOGIN SOLID MERAH STROBERI */
+        .btn-login {
+            width: 100%;
+            background-color: #c8132a;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(200, 19, 42, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background-color: #a00f20;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(200, 19, 42, 0.35);
+        }
+
+        /* NOTIFIKASI ERROR GAGAL LOGIN */
+        .alert {
+            background-color: #fff0f1;
+            color: #c8132a;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.88rem;
+            border-left: 4px solid #c8132a;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>🍓 Masuk Admin</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('login.login') }}" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="Masukkan username" required autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" name="password" class="form-control form-control-password" placeholder="Masukkan password" required>
+                    <i class="fa-solid fa-eye eye-icon" id="btnMata"></i>
+                </div>
+            </div>
+
+            <div class="options-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="remember" id="remember">
+                    <span>Simpan Password / Ingat Saya</span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-login">Login</button>
+        </form>
+    </div>
+
+    <script>
+        const btnMata = document.querySelector('#btnMata');
+        const inputPassword = document.querySelector('#password');
+
+        btnMata.addEventListener('click', function () {
+            const tipeSekarang = inputPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            inputPassword.setAttribute('type', tipeSekarang);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<div class="admin-grid">
+    <div class="card">
+        <h3 id="form-project-title" style="color: #10ac84;"><i class="fa-solid fa-circle-plus"></i> Tambah Karya Baru</h3>
+        
+        <form id="form-project" action="{{ url_for('projects.add_proyek') }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" id="project-id" name="id">
+            
+            <input type="hidden" id="project-gambar-lama" name="gambar_url_lama">
+
+            <div class="form-group">
+                <label>Judul Proyek</label>
+                <input type="text" id="project-judul" name="judul" class="form-control" placeholder="Contoh: NutriBox App" required>
+            </div>
+            
+            <div class="form-group">
+                <label>File Gambar Ilustrasi Proyek</label>
+                <input type="file" id="project-gambar" name="gambar" class="form-control" accept="image/*" required>
+                <small id="project-gambar-info" style="color: #7f8c8d; display: none; margin-top: 5px;">Biarkan kosong jika tidak ingin mengganti gambar lama.</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Link Github / Demo Proyek</label>
+                <input type="text" id="project-link" name="link_proyek" class="form-control" placeholder="Contoh: https://github.com/..." required>
+            </div>
+            <div class="form-group">
+                <label>Deskripsi Pendek Proyek</label>
+                <textarea id="project-deskripsi" name="deskripsi" class="form-control" rows="3" required></textarea>
+            </div>
+            
+            <button type="submit" id="btn-project-submit" class="btn-strawberry">Simpan Karya</button>
+            <button type="button" id="btn-project-batal" class="btn-maroon" style="margin-top: 10px; display: none; background-color: #7f8c8d;" onclick="resetFormProject()">Batal Edit</button>
+        </form>
+    </div>
+    
+    <div class="card">
+        <h3 style="color: var(--primary-maroon);"><i class="fa-solid fa-list"></i> Daftar Karya</h3>
+        {% if proyek_list %}
+            <table class="admin-table">
+                <thead><tr><th>Judul Karya</th><th>Link URL</th><th style="text-align:right;">Aksi</th></tr></thead>
+                <tbody>
+                    {% for pr in proyek_list %}
+                    <tr>
+                        <td><strong>{{ pr.judul }}</strong><br><small style="color:#7f8c8d;">{{ pr.deskripsi[:45] }}...</small></td>
+                        <td><a href="{{ pr.link_proyek }}" target="_blank" style="color:#c8132a; font-size:0.9rem;">Buka Tautan 🔗</a></td>
+                        <td style="text-align:right;">
+                            <a href="javascript:void(0)" class="btn-edit-sm" onclick="isiFormEditProject('{{ pr.id }}', '{{ pr.judul }}', '{{ pr.gambar_url }}', '{{ pr.link_proyek }}', '{{ pr.deskripsi }}')">Edit</a>
+                            <a href="{{ url_for('projects.delete_proyek', id=pr.id) }}" class="btn-delete-sm" onclick="return confirm('Hapus data proyek ini?')">Hapus</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="color:#7f8c8d; font-style:italic;">Belum ada portofolio proyek.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function isiFormEditProject(id, judul, gambar, link, deskripsi) {
+        document.getElementById('form-project-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Karya';
+        document.getElementById('form-project-title').style.color = '#2980b9';
+        
+        document.getElementById('project-id').value = id;
+        document.getElementById('project-gambar-lama').value = gambar; // Kunci URL gambar Cloudinary yang lama
+        document.getElementById('project-judul').value = judul;
+        document.getElementById('project-link').value = link;
+        document.getElementById('project-deskripsi').value = deskripsi;
+        
+        // Saat mengedit, upload file tidak wajib diisi kembali
+        document.getElementById('project-gambar').required = false;
+        document.getElementById('project-gambar-info').style.display = "block";
+        
+        document.getElementById('form-project').action = "/admin/update-proyek/" + id;
+        document.getElementById('btn-project-submit').innerText = "Simpan Perubahan";
+        document.getElementById('btn-project-submit').style.backgroundColor = "#2980b9";
+        document.getElementById('btn-project-batal').style.display = "block";
+    }
+
+    function resetFormProject() {
+        document.getElementById('form-project-title').innerHTML = '<i class="fa-solid fa-circle-plus"></i> Tambah Karya Baru';
+        document.getElementById('form-project-title').style.color = '#10ac84';
+        document.getElementById('form-project').reset();
+        
+        // Kembalikan kewajiban upload file untuk data baru
+        document.getElementById('project-gambar').required = true;
+        document.getElementById('project-gambar-info').style.display = "none";
+        
+        document.getElementById('form-project').action = "{{ url_for('projects.add_proyek') }}";
+        document.getElementById('btn-project-submit').innerText = "Simpan Karya";
+        document.getElementById('btn-project-submit').style.backgroundColor = "#c8132a";
+        document.getElementById('btn-project-batal').style.display = "none";
+    }
+</script>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Manajemen Hobi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; margin: 0; padding: 30px; color: #333; }
+    .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    .header-box { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #f1f2f6; padding-bottom: 15px; }
+    h2 { margin: 0; color: #ff4d6d; }
+    .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary { background: #ff4d6d; color: white; }
+    .btn-edit { background: #eccc68; color: #333; padding: 6px 12px; font-size: 0.85rem; }
+    .btn-delete { background: #ff4757; color: white; padding: 6px 12px; font-size: 0.85rem; }
+    .btn-back { background: #747d8c; color: white; margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background-color: #f1f2f6; color: #475569; }
+    .icon-preview { font-size: 1.3rem; color: #ff4d6d; }
+    
+    /* STYLE MODAL POPUP */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 100; }
+    .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); position: relative; }
+    .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #aaa; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
+    .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header-box">
+    <h2><i class="fa-solid fa-heart"></i> Manajemen Hobi &amp; Interests</h2>
+    <button class="btn btn-primary" onclick="openModal('addModal')"><i class="fa-solid fa-plus"></i> Tambah Hobi</button>
+  </div>
+
+  <!-- TABEL DAFTAR HOBI -->
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 8%">Icon</th>
+        <th style="width: 25%">Nama Hobi</th>
+        <th style="width: 47%">Deskripsi</th>
+        <th style="width: 20%">Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- KOREKSI UTAMA: Mengubah variabel dari 'hobbies' menjadi 'hobi_list' -->
+      {% for hb in hobi_list %}
+      <tr>
+        <td><span class="icon-preview"><i class="{{ hb.icon }}"></i></span></td>
+        <td><strong>{{ hb.nama_hobi }}</strong></td>
+        <td>{{ hb.deskripsi }}</td>
+        <td>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-edit" onclick="openEditModal('{{ hb.id }}', '{{ hb.nama_hobi }}', '{{ hb.icon }}', '{{ hb.deskripsi }}')">
+              <i class="fa-solid fa-pen-to-square"></i> Edit
+            </button>
+            <form action="{{ url_for('hobbies_admin.delete_hobby', id=hb.id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus hobi ini?')">
+              <button type="submit" class="btn btn-delete"><i class="fa-solid fa-trash"></i> Hapus</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4" style="text-align: center; color: #aaa; padding: 30px;">Belum ada data hobi di database.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- ==================== MODAL TAMBAH HOBI ==================== -->
+<div id="addModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('addModal')">&times;</span>
+    <h3>Tambah Hobi Baru</h3>
+    <form action="{{ url_for('hobbies_admin.add_hobby') }}" method="POST">
+      <div class="form-group">
+        <label>Nama Hobi</label>
+        <input type="text" name="nama_hobi" placeholder="Contoh: Coffee Hunting" required>
+      </div>
+      <div class="form-group">
+        <label>Class Icon FontAwesome</label>
+        <input type="text" name="icon" placeholder="Contoh: fa-solid fa-mug-hot" required>
+      </div>
+      <div class="form-group">
+        <label>Deskripsi Singkat</label>
+        <textarea name="deskripsi" rows="3" placeholder="Ceritakan ketertarikanmu..." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Simpan Hobi</button>
+    </form>
+  </div>
+</div>
+
+<!-- ==================== MODAL EDIT HOBI ==================== -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('editModal')">&times;</span>
+    <h3>Edit Data Hobi</h3>
+    <form id="editForm" method="POST">
+      <div class="form-group">
+        <label>Nama Hobi</label>
+        <input type="text" id="edit_nama" name="nama_hobi" required>
+      </div>
+      <div class="form-group">
+        <label>Class Icon FontAwesome</label>
+        <input type="text" id="edit_icon" name="icon" required>
+      </div>
+      <div class="form-group">
+        <label>Deskripsi Singkat</label>
+        <textarea id="edit_deskripsi" name="deskripsi" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; background: #eccc68; color: #333;">Simpan Perubahan</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function openModal(id) {
+    document.getElementById(id).style.display = 'flex';
+  }
+  function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+  
+  function openEditModal(id, nama, icon, deskripsi) {
+    document.getElementById('editForm').action = '/admin/hobbies/edit/' + id;
+    document.getElementById('edit_nama').value = nama;
+    document.getElementById('edit_icon').value = icon;
+    document.getElementById('edit_deskripsi').value = deskripsi;
+    openModal('editModal');
+  }
+
+  window.onclick = function(event) {
+    if (event.target.className === 'modal') {
+      event.target.style.display = 'none';
+    }
+  }
+</script>
+</body>
+</html>

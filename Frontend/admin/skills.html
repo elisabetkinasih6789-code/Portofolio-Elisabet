@@ -1,0 +1,79 @@
+<div class="admin-grid">
+    <div class="card">
+        <h3 id="form-skill-title" style="color: #10ac84;"><i class="fa-solid fa-circle-plus"></i> Tambah Keahlian</h3>
+        
+        <form id="form-skill" action="{{ url_for('skills.add_skill') }}" method="POST">
+            <input type="hidden" id="skill-id" name="id">
+
+            <div class="form-group">
+                <label>Nama Skill / Keahlian</label>
+                <input type="text" id="skill-nama" name="nama_skill" class="form-control" placeholder="Contoh: Flask, Python, SQL" required>
+            </div>
+            <div class="form-group">
+                <label>Kategori Kelompok</label>
+                <input type="text" id="skill-kategori" name="kategori" class="form-control" placeholder="Contoh: Backend, Frontend" required>
+            </div>
+            
+            <button type="submit" id="btn-skill-submit" class="btn-strawberry">Tambah Keahlian</button>
+            
+            <button type="button" id="btn-skill-batal" class="btn-maroon" style="margin-top: 10px; display: none; background-color: #7f8c8d;" onclick="resetFormSkill()">Batal Edit</button>
+        </form>
+    </div>
+    
+    <div class="card">
+        <h3 style="color: var(--primary-maroon);"><i class="fa-solid fa-list"></i> Daftar Keahlian</h3>
+        {% if skill_list %}
+            <table class="admin-table">
+                <thead><tr><th>Nama Skill</th><th>Kelompok</th><th style="text-align:right;">Aksi</th></tr></thead>
+                <tbody>
+                    {% for sk in skill_list %}
+                    <tr>
+                        <td><strong>{{ sk.nama_skill }}</strong></td>
+                        <td><span style="background:#fff5eb; padding:4px 10px; border-radius:4px; color:#7a0f18; font-size:0.85rem;">{{ sk.kategori }}</span></td>
+                        <td style="text-align:right;">
+                            <a href="javascript:void(0)" class="btn-edit-sm" onclick="isiFormEditSkill('{{ sk.id }}', '{{ sk.nama_skill }}', '{{ sk.kategori }}')">Edit</a>
+                            
+                            <a href="{{ url_for('skills.delete_skill', id=sk.id) }}" class="btn-delete-sm" onclick="return confirm('Hapus keahlian ini?')">Hapus</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="color:#7f8c8d; font-style:italic;">Belum ada keahlian di-input.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function isiFormEditSkill(id, nama, kategori) {
+        // 1. Ubah judul form dan warna ikon menjadi mode Edit
+        document.getElementById('form-skill-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Keahlian';
+        document.getElementById('form-skill-title').style.color = '#2980b9';
+        
+        // 2. Masukkan data dari tabel ke dalam kotak input secara instan
+        document.getElementById('skill-id').value = id;
+        document.getElementById('skill-nama').value = nama;
+        document.getElementById('skill-kategori').value = kategori;
+        
+        // 3. Ubah arah action form menuju rute update_skill backend Flask
+        // Jalur dinamis: /admin/update-skill/<id>
+        document.getElementById('form-skill').action = "/admin/update-skill/" + id;
+        
+        // 4. Ubah teks tombol utama & munculkan tombol batal
+        document.getElementById('btn-skill-submit').innerText = "Simpan Perubahan";
+        document.getElementById('btn-skill-submit').style.backgroundColor = "#2980b9";
+        document.getElementById('btn-skill-batal').style.display = "block";
+    }
+
+    function resetFormSkill() {
+        // Mengembalikan form ke mode "Tambah Data" semula
+        document.getElementById('form-skill-title').innerHTML = '<i class="fa-solid fa-circle-plus"></i> Tambah Keahlian';
+        document.getElementById('form-skill-title').style.color = '#10ac84';
+        document.getElementById('form-skill').reset();
+        document.getElementById('form-skill').action = "{{ url_for('skills.add_skill') }}";
+        document.getElementById('btn-skill-submit').innerText = "Tambah Keahlian";
+        document.getElementById('btn-skill-submit').style.backgroundColor = "#c8132a";
+        document.getElementById('btn-skill-batal').style.display = "none";
+    }
+</script>

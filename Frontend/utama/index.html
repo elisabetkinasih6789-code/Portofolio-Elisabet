@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ profil.nama }} — Portfolio</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='utama/css/style.css') }}">
+</head>
+<body>
+
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="logo">Elisabet</a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#hobbies">Hobbies</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#project">Project</a>
+    </nav>
+    
+    <button id="theme-toggle" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; padding: 8px; color: inherit; margin-right: 10px; display: inline-flex; align-items: center; justify-content: center; transition: transform 0.2s;" title="Ganti Mode Warna">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+
+    <a href="{{ url_for('login.login') }}" class="login-nav-btn">Login</a>
+    <a href="#contact" class="btn btn-primary nav-cta">Contact Me</a>
+    
+    <button class="burger" id="burger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-content" data-aos="fade-up" data-aos-duration="1200">
+    <div class="hero-text">
+      <span class="hero-eyebrow" style="color: var(--red-bright); background: rgba(255,255,255,0.8);">✦ WELCOME TO MY PORTFOLIO ✦</span>
+      <h1 class="hero-title">{{ profil.nama }}</h1>
+      <a href="#about" class="btn btn-primary hero-btn">GET TO KNOW ME →</a>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-container">
+    <div class="about-card" data-aos="fade-up" data-aos-duration="1000">
+      <div class="about-capsule">"Bridging Logic and Leadership"</div>
+      <h2 class="about-title">About Me</h2>
+      <p class="about-text">
+        {{ profil.deskripsi }}
+      </p>
+      <a href="#contact" class="btn-contact-about">Contact Me ➔</a>
+    </div>
+  </div>
+</section>
+
+<section class="hobbies" id="hobbies" style="padding: 80px 0;">
+  <h2 class="section-title" data-aos="fade-up">✨ My Hobbies &amp; Interests</h2>
+  <p style="text-align: center; color: #7f8c8d; font-family: 'Poppins', sans-serif; font-size: 0.95rem; margin-top: -15px; margin-bottom: 40px;" data-aos="fade-up">
+    Beyond the Code — Sekilas aktivitas saya di luar dunia IT
+  </p>
+  
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <div class="hobbies-grid">
+      {% for hb in hobi_list %}
+      <div class="hobby-item-card" data-aos="zoom-in" data-aos-delay="{{ loop.index0 * 100 }}">
+        <div class="hobby-icon"><i class="{{ hb.icon }}"></i></div>
+        <h4>{{ hb.nama_hobi }}</h4>
+        <p>{{ hb.deskripsi }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<section class="skills" id="skills">
+    <h2 class="section-title" data-aos="fade-up">⚡ My Tech Skills</h2>
+    <div class="skills-grid">
+        {% for sk in skill_list %}
+        <div class="skill-card" data-aos="zoom-in" data-aos-delay="{{ loop.index0 * 50 }}" data-aos-duration="600">
+            <span class="skill-badge">{{ sk.kategori }}</span>
+            <h3>{{ sk.nama_skill }}</h3>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="experience" id="experience">
+    <h2 class="section-title" data-aos="fade-up">📋 My Journey &amp; Experience</h2>
+    <div class="timeline">
+        <div class="timeline-line"></div>
+
+        {% for exp in pengalaman_list %}
+        <div class="timeline-item {% if loop.index % 2 != 0 %}left{% else %}right{% endif %}" 
+             data-aos="{% if loop.index % 2 != 0 %}fade-right{% else %}fade-left{% endif %}" 
+             data-aos-duration="1000">
+            <div class="timeline-card">
+                <span class="timeline-date">{{ exp.tahun }}</span>
+                <h3>{{ exp.posisi }}</h3>
+                <p class="timeline-sub">{{ exp.institusi }}</p>
+                <p class="timeline-desc">{{ exp.deskripsi }}</p>
+            </div>
+            <span class="timeline-dot"></span>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="projects" id="project">
+    <h2 class="section-title" data-aos="fade-up">🚀 Featured Projects</h2>
+    
+    <div class="projects-grid">
+        {% for pr in proyek_list %}
+        <div class="project-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="{{ loop.index0 * 100 }}">
+            
+            <div class="project-image-box">
+                {% if pr.gambar_url and 'http' in pr.gambar_url %}
+                    <img src="{{ pr.gambar_url }}" alt="{{ pr.judul }}" style="width:100%; height:100%; object-fit:cover;">
+                {% elif pr.gambar_url %}
+                    <img src="{{ url_for('static', filename=pr.gambar_url) }}" alt="{{ pr.judul }}" style="width:100%; height:100%; object-fit:cover;">
+                {% else %}
+                    <div style="display:flex; align-items:center; justify-content:center; height:100%; background:#f1f2f6; color:#7f8c8d;">
+                        <i class="fa-solid fa-code" style="font-size:2.5rem;"></i>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="project-content">
+                <h3>{{ pr.judul }}</h3>
+                <p>{{ pr.deskripsi }}</p>
+                
+                <div class="project-actions" style="margin-top:auto; padding-top:15px;">
+                    <a href="{{ pr.link_proyek }}" target="_blank" class="project-btn">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Lihat Proyek 🔗
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="contact" id="contact" data-aos="fade-up" data-aos-duration="1000">
+  <span class="heart-icon big">♡</span>
+  <h2 class="section-title">Contact Me</h2>
+  <p class="contact-sub">Have a project in mind? I'd love to hear your vision and cook up something special together.</p>
+
+  <form class="contact-form" id="portfolioContactForm">
+    <div class="form-row">
+      <div class="form-group">
+        <label>✦ Your Name</label>
+        <input type="text" name="nama_pengirim" placeholder="Baker Mayfield" required>
+      </div>
+      <div class="form-group">
+        <label>✦ Email Address</label>
+        <input type="email" name="email_pengirim" placeholder="bake@example.com" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>✦ Your Recipe</label>
+      <textarea name="isi_pesan_pengirim" rows="4" placeholder="Tell us about your project, goals &amp; what's been on your heart lately…" required></textarea>
+    </div>
+    <div class="form-group">
+      <label class="checkbox-row">
+        <input type="checkbox" required>
+        <span>I agree to all Terms &amp; Conditions</span>
+      </label>
+      <button type="submit" class="btn btn-primary" style="width:auto; display:inline-block; padding:12px 30px;">Send Message ➤</button>
+    </div>
+  </form>
+
+  <p class="form-success" id="formSuccess">✦ Thank you! Your message has been sent. ✦</p>
+</section>
+
+
+<script src="{{ url_for('static', filename='utama/js/script.js') }}"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+    AOS.init({
+        once: true,
+        offset: 120,
+    });
+
+    const toggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = toggleBtn.querySelector('i');
+    
+    if (localStorage.getItem('portfolio-theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeIcon.className = 'fa-solid fa-sun';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('portfolio-theme', 'dark');
+            themeIcon.className = 'fa-solid fa-sun';
+            toggleBtn.style.transform = 'rotate(180deg)';
+        } else {
+            localStorage.setItem('portfolio-theme', 'light');
+            themeIcon.className = 'fa-solid fa-moon';
+            toggleBtn.style.transform = 'rotate(0deg)';
+        }
+    });
+
+    document.getElementById('portfolioContactForm').addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        const nama = e.target.elements['nama_pengirim'].value;
+        const email = e.target.elements['email_pengirim'].value;
+        const message = e.target.elements['isi_pesan_pengirim'].value;
+        const successMessage = document.getElementById('formSuccess');
+
+        fetch('/submit-contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: nama, email: email, message: message })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === 'success') {
+                successMessage.style.display = 'block'; 
+                e.target.reset(); 
+                setTimeout(() => { successMessage.style.display = 'none'; }, 5000);
+            } else {
+                alert('Opps! Gagal: ' + data.message);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Terjadi kendala koneksi saat mengirim pesan.');
+        });
+    });
+</script>
+
+<!-- ==================== REVISI FOOTER: DENGAN SOSIAL MEDIA ==================== -->
+<footer class="footer">
+  <!-- ──► KOTAK IKON SOSIAL MEDIA BARU ◄── -->
+  <div class="footer-socials" data-aos="fade-up">
+    <!-- Ganti 'USERNAME_KAMU' dengan username asli akunmu ya! -->
+    <a href="https://instagram.com/elisabetputriiii" target="_blank" title="Instagram">
+      <i class="fa-brands fa-instagram"></i>
+    </a>
+    <a href="https://github.com/elisabetkinasih6789-code" target="_blank" title="GitHub">
+      <i class="fa-brands fa-github"></i>
+    </a>
+    <a href="https://linkedin.com/in/elisabet putri k" target="_blank" title="LinkedIn">
+      <i class="fa-brands fa-linkedin"></i>
+    </a>
+  </div>
+  
+  <p>Made with ♡ by {{ profil.nama }} — © 2026</p>
+</footer>
+</body>
+</html>

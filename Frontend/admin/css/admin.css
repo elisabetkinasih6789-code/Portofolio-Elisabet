@@ -1,0 +1,201 @@
+/* File: Frontend/static/admin/css/admin.css */
+:root {
+    --primary-maroon: #7a0f18;
+    --bright-strawberry: #c8132a;
+    --soft-cream: #faf3f0;
+    --text-dark: #2c3e50;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--soft-cream);
+    margin: 0;
+    display: flex;
+    color: var(--text-dark);
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background-color: var(--primary-maroon);
+    height: 100vh;
+    position: fixed;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.sidebar-header {
+    padding: 25px 20px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-menu {
+    padding: 15px 0;
+    flex-grow: 1;
+}
+
+.sidebar-menu a {
+    padding: 14px 20px;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sidebar-menu a:hover, .sidebar-menu a.active {
+    color: white;
+    background-color: var(--bright-strawberry);
+    border-left: 5px solid white;
+}
+
+.logout-btn {
+    margin-top: auto;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* MAIN CONTENT */
+.main-content {
+    margin-left: 260px;
+    padding: 40px;
+    width: calc(100% - 260px);
+    box-sizing: border-box;
+    min-height: 100vh;
+}
+
+.welcome-header { margin-bottom: 30px; }
+.welcome-header h2 { margin: 0; color: var(--primary-maroon); font-size: 1.8rem; }
+
+/* STATS CARDS */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.stats-card {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(122, 15, 24, 0.03);
+    border: 1px solid rgba(122, 15, 24, 0.05);
+}
+
+.stats-info h3 { margin: 0; font-size: 1.8rem; color: var(--primary-maroon); }
+.stats-info p { margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem; font-weight: 600; }
+.stats-icon { font-size: 2.2rem; color: var(--bright-strawberry); opacity: 0.25; }
+
+/* TAB SYSTEM */
+.tab-content { display: none; animation: fadeIn 0.4s ease; }
+.tab-content.active { display: block; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* GRID & CARDS */
+.admin-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; align-items: start; }
+.w-full { grid-template-columns: 1fr; }
+.card { background: white; padding: 30px; border-radius: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03); }
+.card h3 { margin-top: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+
+/* FORMS */
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #555; }
+.form-control { width: 100%; padding: 12px; border: 2px solid #ebdcd5; border-radius: 10px; font-size: 0.95rem; box-sizing: border-box; background-color: #fffaf8; }
+.form-control:focus { outline: none; border-color: var(--bright-strawberry); background: white; }
+
+/* BUTTONS */
+button { width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: bold; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; }
+.btn-maroon { background: var(--primary-maroon); color: white; }
+.btn-maroon:hover { background: #560a10; }
+.btn-strawberry { background: var(--bright-strawberry); color: white; }
+.btn-strawberry:hover { background: #9a0d1d; }
+
+/* TABLES */
+.admin-table { width: 100%; border-collapse: collapse; text-align: left; }
+.admin-table th, .admin-table td { padding: 14px; border-bottom: 1px solid #f1f2f6; }
+.admin-table th { background-color: #fff5eb; color: var(--primary-maroon); font-weight: 700; }
+
+/* ===================================================
+   TOMBOL AKSI TAMBAHAN (EDIT & HAPUS)
+=================================================== */
+.btn-edit-sm { 
+    color: #2980b9; 
+    text-decoration: none; 
+    font-weight: bold; 
+    font-size: 0.85rem; 
+    padding: 5px 12px; 
+    background: #e1f5fe; /* Biru muda transparan yang estetik */
+    border-radius: 6px; 
+    transition: 0.3s; 
+    margin-right: 8px; /* Memberi jarak aman sebelum tombol hapus */
+    display: inline-block;
+}
+.btn-edit-sm:hover { background: #2980b9; color: white; }
+
+.btn-delete-sm { color: #c8132a; text-decoration: none; font-weight: bold; font-size: 0.85rem; padding: 5px 10px; background: #fff0f1; border-radius: 6px; transition: 0.3s; display: inline-block; }
+.btn-delete-sm:hover { background: #c8132a; color: white; }
+
+.alert { padding: 14px; border-radius: 10px; margin-bottom: 25px; border-left: 5px solid var(--bright-strawberry); background: #fff0f1; color: var(--bright-strawberry); font-weight: 600; }
+
+/* ===================================================
+   PERBAIKAN TOTAL LAYOUT: ANTI-TURUN & FULL SCREEN FLUID
+=================================================== */
+
+/* 1. Paksa body utama menjadi wadah flexbox tanpa pembungkus sisa margin */
+body {
+    display: flex !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* 2. Kunci ukuran lebar sidebar biar gak ikut gepeng atau melar */
+.sidebar {
+    width: 260px !important; /* Menyesuaikan lebar sidebar merahmu */
+    flex-shrink: 0 !important; /* Melarang sidebar mengecil */
+}
+
+/* 3. REVISI UTAMA: Biarkan main-content otomatis mengisi sisa ruang tanpa width 100% */
+.main-content {
+    flex: 1 !important; /* Mengambil 100% sisa ruang yang tersedia di kanan */
+    width: auto !important; /* HAPUS width 100% yang bikin dia jebol ke bawah tadi */
+    padding: 40px 30px !important;
+    box-sizing: border-box !important;
+    background-color: #f8f9fa;
+    min-width: 0; /* Mencegah konten di dalamnya merusak grid flex */
+}
+
+/* 4. Pastikan boks tab di dalamnya juga melebar sempurna */
+.container, 
+.tab-content {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* 5. Pastikan layout baris (Tambah Riwayat & Daftar) membagi ruang secara adil */
+.tab-content.active {
+    display: block !important;
+}

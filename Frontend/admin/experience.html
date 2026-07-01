@@ -1,0 +1,79 @@
+<div class="admin-grid">
+    <div class="card">
+        <h3 id="form-exp-title" style="color: #10ac84;"><i class="fa-solid fa-circle-plus"></i> Tambah Riwayat</h3>
+        <form id="form-experience" action="{{ url_for('experience.add_pengalaman') }}" method="POST">
+            <input type="hidden" id="exp-id" name="id">
+
+            <div class="form-group">
+                <label>Posisi / Jabatan</label>
+                <input type="text" id="exp-posisi" name="posisi" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Institusi / Tempat</label>
+                <input type="text" id="exp-institusi" name="institusi" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Tahun Periode</label>
+                <input type="text" id="exp-tahun" name="tahun" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Deskripsi Kontribusi</label>
+                <textarea id="exp-deskripsi" name="deskripsi" class="form-control" rows="3" required></textarea>
+            </div>
+            
+            <button type="submit" id="btn-exp-submit" class="btn-strawberry">Masukkan ke Riwayat</button>
+            <button type="button" id="btn-exp-batal" class="btn-maroon" style="margin-top: 10px; display: none; background-color: #7f8c8d;" onclick="resetFormExperience()">Batal Edit</button>
+        </form>
+    </div>
+    
+    <div class="card">
+        <h3 style="color: var(--primary-maroon);"><i class="fa-solid fa-list"></i> Daftar Riwayat</h3>
+        {% if pengalaman_list %}
+            <table class="admin-table">
+                <thead><tr><th>Jabatan / Tahun</th><th>Institusi</th><th style="text-align:right;">Aksi</th></tr></thead>
+                <tbody>
+                    {% for exp in pengalaman_list %}
+                    <tr>
+                        <td><strong>{{ exp.posisi }}</strong><br><small>{{ exp.tahun }}</small></td>
+                        <td>{{ exp.institusi }}</td>
+                        <td style="text-align:right;">
+                            <a href="javascript:void(0)" class="btn-edit-sm" onclick="isiFormEditExperience('{{ exp.id }}', '{{ exp.posisi }}', '{{ exp.institusi }}', '{{ exp.tahun }}', '{{ exp.deskripsi }}')">Edit</a>
+                            <a href="{{ url_for('experience.delete_pengalaman', id=exp.id) }}" class="btn-delete-sm" onclick="return confirm('Hapus riwayat ini?')">Hapus</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="color:#7f8c8d; font-style:italic;">Belum ada riwayat.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function isiFormEditExperience(id, posisi, institusi, tahun, deskripsi) {
+        document.getElementById('form-exp-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Riwayat';
+        document.getElementById('form-exp-title').style.color = '#2980b9';
+        
+        document.getElementById('exp-id').value = id;
+        document.getElementById('exp-posisi').value = posisi;
+        document.getElementById('exp-institusi').value = institusi;
+        document.getElementById('exp-tahun').value = tahun;
+        document.getElementById('exp-deskripsi').value = deskripsi;
+        
+        document.getElementById('form-experience').action = "/admin/update-pengalaman/" + id;
+        document.getElementById('btn-exp-submit').innerText = "Simpan Perubahan";
+        document.getElementById('btn-exp-submit').style.backgroundColor = "#2980b9";
+        document.getElementById('btn-exp-batal').style.display = "block";
+    }
+
+    function resetFormExperience() {
+        document.getElementById('form-exp-title').innerHTML = '<i class="fa-solid fa-circle-plus"></i> Tambah Riwayat';
+        document.getElementById('form-exp-title').style.color = '#10ac84';
+        document.getElementById('form-experience').reset();
+        document.getElementById('form-experience').action = "{{ url_for('experience.add_pengalaman') }}";
+        document.getElementById('btn-exp-submit').innerText = "Masukkan ke Riwayat";
+        document.getElementById('btn-exp-submit').style.backgroundColor = "#c8132a";
+        document.getElementById('btn-exp-batal').style.display = "none";
+    }
+</script>
