@@ -35,6 +35,3 @@ app.register_blueprint(contact_bp)
 # 2. DI SINI TEMPAT REGISTRASI HOBI BARU:
 app.register_blueprint(hobbies_bp)
 
-if __name__ == '__main__':
-    # Sekarang di bawah ini sudah bersih tanpa ada sisa teks typo lagi
-    app.run(debug=True, port=5001)

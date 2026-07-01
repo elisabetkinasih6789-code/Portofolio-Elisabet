@@ -27,7 +27,7 @@ def index():
         if not profil:
             profil = {'nama': 'Elisabet Putri Kinasih', 'deskripsi': 'SISP Student'}
             
-        return render_template('utama/index.html', 
+        return render_template('index.html', 
                                profil=profil, 
                                pengalaman_list=pengalaman_list, 
                                skill_list=skill_list, 
@@ -72,7 +72,7 @@ def index():
         conn.close()
         
         # Mengirimkan semua data termasuk hobi_list ke HTML
-        return render_template('utama/index.html', 
+        return render_template('index.html', 
                                profil=profil, 
                                skill_list=skill_list, 
                                pengalaman_list=pengalaman_list, 
